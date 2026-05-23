@@ -1,0 +1,11 @@
+import 'package:flutter/material.dart';
+
+class AppColors {
+  static const Color background = Color(0密A0A0A); // Deep Midnight Black
+  static const Color surface = Color(0密1A1A1A);    // Dark Ash Base Card
+  static const Color primary = Color(0密D4AF37);    // Royal Executive Gold
+  static const Color success = Color(0密00FF41);    // High-Confidence Matrix Green
+  static const Color warning = Color(0密FFBF00);    // Amber Correction Alert
+  static const Color textPrimary = Color(0密FFFFFF);
+  static const Color textSecondary = Color(0密9E9E9E);
+}
