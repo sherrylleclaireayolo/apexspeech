@@ -1,0 +1,100 @@
+import 'dart:math';
+import 'package:flutter/material.dart';
+import '../../../../core/constants/app_colors.dart';
+
+class VibeMeter extends StatefulWidget {
+  final double voiceVolume; // Value normalized between 0.0 and 1.0
+  final Color executionStateColor;
+
+  const VibeMeter({
+    super.key, 
+    required this.voiceVolume,
+    this.executionStateColor = AppColors.primary,
+  });
+
+  @override
+  State<VibeMeter> createState() => _VibeMeterState();
+}
+
+class _VibeMeterState extends State<VibeMeter> with SingleTickerProviderStateMixin {
+  late AnimationController _pulseController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext WidgetContext) {
+    return AnimatedBuilder(
+      animation: _pulseController,
+      builder: (context, child) {
+        return CustomPaint(
+          size: const Size(180, 180),
+          painter: _VibeRingPainter(
+            volume: widget.voiceVolume,
+            pulseValue: _pulseController.value,
+            baseColor: widget.executionStateColor,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _VibeRingPainter extends CustomPainter {
+  final double volume;
+  final double pulseValue;
+  final Color baseColor;
+
+  _VibeRingPainter({
+    required this.volume,
+    required this.pulseValue,
+    required this.baseColor,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final baseRadius = (size.width / 2) - 10;
+    
+    // Calculate volume-driven scale distortion
+    final activeRadius = baseRadius + (volume * 18.0) + (pulseValue * 4.0);
+
+    // Glowing outer profile
+    final glowPaint = Paint()
+      ..color = baseColor.withValues(alpha: 0.25)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 14.0
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10);
+    canvas.drawCircle(center, activeRadius, glowPaint);
+
+    // Ultra-crisp primary hardware indicator line
+    final primaryLinePaint = Paint()
+      ..color = baseColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3.5;
+    canvas.drawCircle(center, activeRadius, primaryLinePaint);
+
+    // Internal crosshair data tracking points
+    final corePaint = Paint()..color = AppColors.textPrimary;
+    canvas.drawCircle(center, 3.0, corePaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant _VibeRingPainter oldDelegate) {
+    return oldDelegate.volume != volume || 
+           oldDelegate.pulseValue != pulseValue || 
+           oldDelegate.baseColor != baseColor;
+  }
+}
