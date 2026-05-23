@@ -1,0 +1,18 @@
+lib/
+├── core/
+│   ├── constants/
+│   │   └── app_colors.dart       # Executive color system config
+│   └── theme/
+│       └── app_theme.dart        # Global high-end styling
+├── features/
+│   ├── dashboard/                # Main interface hub
+│   └── rehearsal/
+│       ├── data/
+│       │   ├── models/
+│       │   └── repositories/
+│       ├── domain/
+│       └── presentation/
+│           ├── controllers/      # State management orchestrators
+│           ├── pages/            # Teleprompter / Rehearsal room view
+│           └── widgets/          # VibeMeter, ModulationGraph, GlassCard
+└── main.dart
