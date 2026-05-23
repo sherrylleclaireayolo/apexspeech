@@ -1,0 +1,51 @@
+import 'dart:ui';
+import 'package:flutter/material.dart';
+import '../../../../core/constants/app_colors.dart';
+
+class GlassTeleprompterCard extends StatelessWidget {
+  final String scriptText;
+  final ScrollController scrollController;
+
+  const GlassTeleprompterCard({
+    super.key,
+    required this.scriptText,
+    required this.scrollController,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(24.0),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 16.0, sigmaY: 16.0),
+        child: Container(
+          padding: const EdgeInsets.all(24.0),
+          decoration: BoxDecoration(
+            color: Colors.black.withValues(alpha: 0.4),
+            borderRadius: BorderRadius.circular(24.0),
+            border: Border.all(
+              color: AppColors.textPrimary.withValues(alpha: 0.15),
+              width: 1.0,
+            ),
+          ),
+          child: ListView.builder(
+            controller: scrollController,
+            physics: const NeverScrollableScrollPhysics(), // Managed strictly by automated scrolling system
+            itemCount: 1,
+            itemBuilder: (context, index) {
+              return Text(
+                scriptText,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
+                  height: 1.6,
+                  letterSpacing: 0.4,
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
