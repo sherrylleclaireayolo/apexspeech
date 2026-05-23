@@ -1,0 +1,15 @@
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  
+  # State Management & Architecture
+  flutter_riverpod: ^2.6.1
+  
+  # UI & Visuals
+  fl_chart: ^0.70.0
+  google_fonts: ^6.2.1
+  
+  # Hardware & Core Infrastructure
+  camera: ^0.11.0+2
+  record: ^5.2.0
